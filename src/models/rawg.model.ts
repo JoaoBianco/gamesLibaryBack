@@ -27,6 +27,8 @@ export interface RawgGame {
   stores: Store[]
   clip: any
   tags: Tag[]
+  detail?: string
+  redirect?: boolean
 }
 
 export interface RawgGamesList {
