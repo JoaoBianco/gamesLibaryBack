@@ -7,20 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  games     Game[]
+enum Status {
+  WANT_TO_PLAY
+  PLAYING
+  COMPLETED
+  DROPPED
 }
 
 model Game {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
+  rawgId    Int
   name      String
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    Int?
+  wishlist  Boolean  @default(false)
+  favorite  Boolean  @default(false)
+  acquired  Boolean  @default(false)
+  inLibrary Boolean  @default(false)
+  status    Status   @default(WANT_TO_PLAY)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 }

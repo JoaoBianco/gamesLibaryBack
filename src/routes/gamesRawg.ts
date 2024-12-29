@@ -21,11 +21,11 @@ router.get('/:idSlug', async (req: Request, res: Response) => {
   try {
     const dirtyGame = await fetchRawgGame(req.params.idSlug)
     if (!dirtyGame) {
-      res.status(404).send('Jogo não encontrado')
+      res.status(404).send({ message: 'Game not found!' })
     }
 
     if(dirtyGame?.detail) {
-      res.status(404).send({ message: 'Jogo não encontrado' })
+      res.status(404).send({ message: 'Game not found!' })
       return
     }
 
