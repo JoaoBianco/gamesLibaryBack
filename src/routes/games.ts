@@ -8,7 +8,7 @@ router.get('', async (req: Request, res: Response) => {
   try {
     const games = await prisma.game.findMany()
     if (!games.length) { 
-      res.status(404).send('Nenhum jogo encontrado')
+      res.status(404).send('No games found!')
       return
     }
     res.status(200).send(games)
