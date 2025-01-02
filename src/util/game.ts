@@ -24,7 +24,8 @@ async function fetchRawgGameAndAddToDatabase(id: number) {
     const game = await prisma.game.create({
       data: {
         name: rawgGame.name,
-        rawgId: rawgGame.id
+        rawgId: rawgGame.id,
+        imageUrl: rawgGame.background_image
       }
     })
     return game

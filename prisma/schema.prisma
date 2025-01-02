@@ -18,6 +18,7 @@ model Game {
   id        String   @id @default(uuid())
   rawgId    Int
   name      String
+  imageUrl  String
   wishlist  Boolean  @default(false)
   favorite  Boolean  @default(false)
   acquired  Boolean  @default(false)
