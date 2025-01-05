@@ -13,7 +13,8 @@ router.get("", async (req: Request, res: Response) => {
       if (!data.results.length) {
         return res.status(404).send(data)
       }
-      return res.send(data)
+      const dataToReturn = { ...data, next: data.next?.split("&")[1] }
+      return res.send(dataToReturn)
     })
     .catch((err) => {
       res.status(500).send(err)
