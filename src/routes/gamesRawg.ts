@@ -1,18 +1,34 @@
+import { Game, PrismaClient } from "@prisma/client"
 import express, { Request, Response } from "express"
 import { RawgGame, RawgGamesList } from "../models/rawg.model"
 import { RAWGKEY, RAWGURL } from "../util/globalVariables"
 
 const router = express.Router()
+const prisma = new PrismaClient()
+const DEFAULTLIBARYVALUES = {
+  inLibrary: false,
+  wishlist: false,
+  playing: false,
+  acquired: false,
+  favorite: false,
+} as Partial<Game>
 
 router.get("", async (req: Request, res: Response) => {
   const page = req.query.page || 1
   const url = RAWGURL + "games" + RAWGKEY + `&page=${page}`
   await fetch(url)
     .then((response) => response.json())
-    .then((data: RawgGamesList) => {
+    .then(async (data: RawgGamesList) => {
       if (!data.results.length) {
         return res.status(404).send(data)
       }
+      const results = data.results.map(async (game) => {
+        const libraryGame = await prisma.game.findFirst({
+          where: { rawgId: game.id },
+        })
+        return { libraryGame: libraryGame || DEFAULTLIBARYVALUES, ...game }
+      })
+      data.results = await Promise.all(results)
       const dataToReturn = { ...data, next: data.next?.split("&")[1] }
       return res.send(dataToReturn)
     })

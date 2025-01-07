@@ -1,3 +1,5 @@
+import { Game } from "@prisma/client"
+
 export interface RawgGame {
   id: number
   slug: string
@@ -116,4 +118,8 @@ interface Tag {
   language: string
   games_count: number
   image_background: string
+}
+
+export interface RawgAndLibraryGame extends RawgGame {
+  libaryGame: Game
 }
