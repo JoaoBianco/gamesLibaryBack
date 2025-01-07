@@ -15,15 +15,15 @@ enum Status {
 }
 
 model Game {
-  id        String   @id @default(uuid())
-  rawgId    Int
-  name      String
-  imageUrl  String
-  wishlist  Boolean  @default(false)
-  favorite  Boolean  @default(false)
-  acquired  Boolean  @default(false)
-  inLibrary Boolean  @default(false)
-  status    Status   @default(WANT_TO_PLAY)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  id               String   @id @default(uuid())
+  rawgId           Int
+  name             String
+  background_image String
+  wishlist         Boolean  @default(false)
+  favorite         Boolean  @default(false)
+  acquired         Boolean  @default(false)
+  inLibrary        Boolean  @default(false)
+  status           Status   @default(WANT_TO_PLAY)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now()) @updatedAt
 }

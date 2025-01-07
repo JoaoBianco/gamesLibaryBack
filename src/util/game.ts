@@ -1,32 +1,44 @@
-import { Game, PrismaClient } from "@prisma/client";
-import { RawgGame } from "src/models/rawg.model";
-import { LOCALURL } from "./globalVariables";
+import { Game, PrismaClient } from "@prisma/client"
+import { RawgGame } from "src/models/rawg.model"
+import { LOCALURL } from "./globalVariables"
 
 const prisma = new PrismaClient()
 
 export async function verifyIfGameIsInDatabaseOrRawgGame(id: number | string) {
-  let game: RawgGame | Game = await prisma.game.findUnique({where: {id: id.toString()}}) as unknown as Game
+  let game: RawgGame | Game = (await prisma.game.findUnique({
+    where: { id: id.toString() },
+  })) as Game
   if (!game) {
-    game = await fetchRawgGameAndAddToDatabase(Number(id))
+    return await fetchRawgGameAndAddToDatabase(Number(id))
   }
-  return game
+  const rawgGame = await getRawgGame(game.rawgId)
+  console.log({ ...game, ...rawgGame })
+  return { libaryGame: game, ...rawgGame }
 }
 
 async function fetchRawgGameAndAddToDatabase(id: number) {
-  const databaseWithRawgId = await prisma.game.findFirst({where: {rawgId: id}})
+  const databaseWithRawgId = await prisma.game.findFirst({
+    where: { rawgId: id },
+  })
+  const rawgGame: RawgGame = await getRawgGame(id)
   if (databaseWithRawgId) {
-    return databaseWithRawgId
+    return { libaryGame: databaseWithRawgId, ...rawgGame }
   }
-  const rawgGame: RawgGame = await fetch(LOCALURL + 'api/rawgGames/' + id).then(response => response.json())
-    if (!rawgGame) {
-      throw new Error('Game not found!')
-    }
-    const game = await prisma.game.create({
-      data: {
-        name: rawgGame.name,
-        rawgId: rawgGame.id,
-        imageUrl: rawgGame.background_image
-      }
-    })
-    return game
+  if (!rawgGame) {
+    throw new Error("Game not found!")
+  }
+  const game = await prisma.game.create({
+    data: {
+      name: rawgGame.name,
+      rawgId: rawgGame.id,
+      background_image: rawgGame.background_image,
+    },
+  })
+  return { libaryGame: game, ...rawgGame }
+}
+
+async function getRawgGame(id: number) {
+  return await fetch(LOCALURL + "api/rawgGames/" + id).then((response) =>
+    response.json()
+  )
 }
