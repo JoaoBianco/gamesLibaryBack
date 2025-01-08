@@ -5,14 +5,13 @@ import { LOCALURL } from "./globalVariables"
 const prisma = new PrismaClient()
 
 export async function verifyIfGameIsInDatabaseOrRawgGame(id: number | string) {
-  let game: RawgGame | Game = (await prisma.game.findUnique({
+  let game: RawgGame | Game = (await prisma.game.findFirst({
     where: { id: id.toString() },
   })) as Game
   if (!game) {
     return await fetchRawgGameAndAddToDatabase(Number(id))
   }
   const rawgGame = await getRawgGame(game.rawgId)
-  console.log({ ...game, ...rawgGame })
   return { libaryGame: game, ...rawgGame }
 }
 
