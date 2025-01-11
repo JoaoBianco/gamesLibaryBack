@@ -5,10 +5,10 @@ const router = express.Router()
 const prisma = new PrismaClient()
 
 router.get("", async (req: Request, res: Response) => {
-  const onlyLibary = req.query.onlyLibary
+  const onlyLibrary = req.query.onlyLibrary
   try {
     const games = await prisma.game.findMany(
-      onlyLibary ? { where: { inLibrary: true } } : undefined
+      onlyLibrary ? { where: { inLibrary: true } } : undefined
     )
     if (!games.length) {
       res.status(404).send({ message: "No games found!" })

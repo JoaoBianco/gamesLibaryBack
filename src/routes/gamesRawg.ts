@@ -50,7 +50,16 @@ router.get("/:idSlug", async (req: Request, res: Response) => {
       return
     }
 
+    const localGame = await prisma.game.findFirst({
+      where: { rawgId: dirtyGame.id },
+    })
+
     const cleanGame = await verifyIfRedirect(dirtyGame)
+
+    if (localGame) {
+      res.status(200).send({ ...cleanGame, libraryGame: { ...localGame } })
+      return
+    }
 
     res.status(200).send(cleanGame)
     return

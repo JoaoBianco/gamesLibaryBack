@@ -12,7 +12,7 @@ export async function verifyIfGameIsInDatabaseOrRawgGame(id: number | string) {
     return await fetchRawgGameAndAddToDatabase(Number(id))
   }
   const rawgGame = await getRawgGame(game.rawgId)
-  return { libaryGame: game, ...rawgGame }
+  return { libraryGame: game, ...rawgGame }
 }
 
 async function fetchRawgGameAndAddToDatabase(id: number) {
@@ -21,7 +21,7 @@ async function fetchRawgGameAndAddToDatabase(id: number) {
   })
   const rawgGame: RawgGame = await getRawgGame(id)
   if (databaseWithRawgId) {
-    return { libaryGame: databaseWithRawgId, ...rawgGame }
+    return { libraryGame: databaseWithRawgId, ...rawgGame }
   }
   if (!rawgGame) {
     throw new Error("Game not found!")
@@ -33,7 +33,7 @@ async function fetchRawgGameAndAddToDatabase(id: number) {
       background_image: rawgGame.background_image,
     },
   })
-  return { libaryGame: game, ...rawgGame }
+  return { libraryGame: game, ...rawgGame }
 }
 
 async function getRawgGame(id: number) {

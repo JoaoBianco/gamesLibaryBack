@@ -31,8 +31,8 @@ router.post("/toggletolibrary/:id", async (req: Request, res: Response) => {
     )) as RawgAndLibraryGame
     if (game) {
       const updatedGame = await prisma.game.update({
-        where: { id: game.libaryGame.id },
-        data: { inLibrary: !game.libaryGame.inLibrary },
+        where: { id: game.libraryGame.id },
+        data: { inLibrary: !game.libraryGame.inLibrary },
       })
       res.status(200).send(updatedGame)
       return
@@ -52,8 +52,8 @@ router.post("/toggletowishlist/:id", async (req: Request, res: Response) => {
     )) as RawgAndLibraryGame
     if (game) {
       const updatedGame = await prisma.game.update({
-        where: { id: game.libaryGame.id },
-        data: { wishlist: !game.libaryGame.wishlist },
+        where: { id: game.libraryGame.id },
+        data: { wishlist: !game.libraryGame.wishlist },
       })
       res.status(200).send(updatedGame)
       return
@@ -73,8 +73,8 @@ router.post("/toggletofavorite/:id", async (req: Request, res: Response) => {
     )) as RawgAndLibraryGame
     if (game) {
       const updatedGame = await prisma.game.update({
-        where: { id: game.libaryGame.id },
-        data: { favorite: !game.libaryGame.favorite },
+        where: { id: game.libraryGame.id },
+        data: { favorite: !game.libraryGame.favorite },
       })
       res.status(200).send(updatedGame)
       return
@@ -94,8 +94,8 @@ router.post("/toggletoacquired/:id", async (req: Request, res: Response) => {
     )) as RawgAndLibraryGame
     if (game) {
       const updatedGame = await prisma.game.update({
-        where: { id: game.libaryGame.id },
-        data: { acquired: !game.libaryGame.acquired },
+        where: { id: game.libraryGame.id },
+        data: { acquired: !game.libraryGame.acquired },
       })
       res.status(200).send(updatedGame)
       return
@@ -124,7 +124,7 @@ router.patch("/changestatus/:id", async (req: Request, res: Response) => {
     )) as RawgAndLibraryGame
     if (game) {
       const updatedGame = await prisma.game.update({
-        where: { id: game.libaryGame.id },
+        where: { id: game.libraryGame.id },
         data: { status: req.body.status },
       })
       res.status(200).send(updatedGame)

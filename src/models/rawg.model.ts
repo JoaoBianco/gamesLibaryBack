@@ -121,5 +121,5 @@ interface Tag {
 }
 
 export interface RawgAndLibraryGame extends RawgGame {
-  libaryGame: Game
+  libraryGame: Game
 }
