@@ -1,5 +1,6 @@
-import { PrismaClient } from "@prisma/client"
+import { Game, PrismaClient } from "@prisma/client"
 import express, { Request, Response } from "express"
+import { RawgGame } from "src/models/rawg.model"
 
 const router = express.Router()
 const prisma = new PrismaClient()
@@ -7,9 +8,12 @@ const prisma = new PrismaClient()
 router.get("", async (req: Request, res: Response) => {
   const onlyLibrary = req.query.onlyLibrary
   try {
-    const games = await prisma.game.findMany(
+    let games: Game[] | RawgGame[] = await prisma.game.findMany(
       onlyLibrary ? { where: { inLibrary: true } } : undefined
     )
+    games = games.map((game: Game) => {
+      return { libraryGame: { ...game } }
+    }) as unknown as RawgGame[]
     if (!games.length) {
       res.status(404).send({ message: "No games found!" })
       return
